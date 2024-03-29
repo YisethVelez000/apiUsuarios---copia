@@ -5,9 +5,9 @@ const router = require('express').Router();
 const cors = require('cors');
 const cliente = require('../models/cliente');
 const ordenProduccion = require('../models/ordenProduccion');
+const fichaTecnica = require('../models/fichaTecnica');
 const roles = require('../models/roles');
 const bodyParser = require('body-parser')
-const fichaTecnica = require('../models/fichaTecnica');
 //usamos cors para poder hacer peticiones desde el front
 router.use(cors());
 
@@ -209,24 +209,8 @@ router.put('/roles/:id/estado', async (req, res) => {
     res.send(Roles);
 })
 
-//Creamos las rutas para las fichas tecnicas
-const schemaFicha = Joi.object({
-    nombreProducto: Joi.string().min(1).required(),
-    talla: Joi.string().min(1).required(),
-    insumo: Joi.string().min(1).required(),
-    imagen: Joi.string().min(1).required(),
-    color: Joi.string().min(1).required(),
-    cantidadInsumo: Joi.number().min(1).required(),
-    precioInsumo: Joi.number().min(1).required()
-})
 
-router.post('/ficha', async (req, res) => {
-    // Validate the request body
-    const { error } = schemaFicha.validate(req.body);
-    if (error) {
-        return res
-            .status(400).send(error.details[0].message);
-    }
+router.post('/fichas', async (req, res) => {
     // Create a new user
     const Ficha = new fichaTecnica({
         nombreProducto: req.body.nombreProducto,
@@ -237,7 +221,6 @@ router.post('/ficha', async (req, res) => {
         cantidadInsumo: req.body.cantidadInsumo,
         precioInsumo: req.body.precioInsumo
     });
-
     try {
         const savedFicha = await Ficha.save();
         res.send(savedFicha);
@@ -245,8 +228,6 @@ router.post('/ficha', async (req, res) => {
         res
             .status(400)
     }
-
-
 })
 
 router.get('/fichas', async (req, res) => {

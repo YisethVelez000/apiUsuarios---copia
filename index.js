@@ -26,6 +26,7 @@ const rutas = require('./routes/routes');
 app.use('/api/user', authRoutes);
 app.use('/api/routes', rutas);
 
+
 app.get('/', (req, res) => {
     res.json({
         estado: true,

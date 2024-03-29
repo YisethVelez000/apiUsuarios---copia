@@ -1,7 +1,7 @@
-const{Shema, model}= require('mongoose')
-
-const FichaShema=({
-      nombreProducto: {
+const mongoose = require('mongoose');
+const Joi = require('@hapi/joi');
+const FichaSchema = mongoose.Schema({
+    nombreProducto: {
         type: String,
         required: true,
       },
@@ -32,6 +32,7 @@ const FichaShema=({
         type: Number,
         required: true,
       },
-    })
+
+})
     
-module.exports = model('fichaTecnica', FichaShema)
+module.exports = mongoose.model('fichaTecnica', FichaSchema);
