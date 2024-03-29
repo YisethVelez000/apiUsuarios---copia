@@ -224,7 +224,8 @@ router.post('/ficha', async (req, res) => {
     // Validate the request body
     const { error } = schemaFicha.validate(req.body);
     if (error) {
-        return res.status(400).send(error.details[0].message);
+        return res
+            .status(400).send(error.details[0].message);
     }
     // Create a new user
     const Ficha = new fichaTecnica({
@@ -236,6 +237,7 @@ router.post('/ficha', async (req, res) => {
         cantidadInsumo: req.body.cantidadInsumo,
         precioInsumo: req.body.precioInsumo
     });
+
     try {
         const savedFicha = await Ficha.save();
         res.send(savedFicha);
@@ -243,6 +245,8 @@ router.post('/ficha', async (req, res) => {
         res
             .status(400)
     }
+
+
 })
 
 router.get('/fichas', async (req, res) => {
