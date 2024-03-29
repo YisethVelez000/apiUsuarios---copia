@@ -209,8 +209,23 @@ router.put('/roles/:id/estado', async (req, res) => {
     res.send(Roles);
 })
 
+//Creamos las rutas para las fichas tecnicas
+const schemaFicha = Joi.object({
+    nombreProducto: Joi.string().min(1).required(),
+    talla: Joi.string().min(1).required(),
+    insumo: Joi.string().min(1).required(),
+    imagen: Joi.string().min(1).required(),
+    color: Joi.string().min(1).required(),
+    cantidadInsumo: Joi.number().min(1).required(),
+    precioInsumo: Joi.number().min(1).required()
+})
 
-router.post('/fichas', async (req, res) => {
+router.post('/ficha', async (req, res) => {
+    // Validate the request body
+    const { error } = schemaFicha.validate(req.body);
+    if (error) {
+        return res.status(400).send(error.details[0].message);
+    }
     // Create a new user
     const Ficha = new fichaTecnica({
         nombreProducto: req.body.nombreProducto,
@@ -233,7 +248,9 @@ router.post('/fichas', async (req, res) => {
 router.get('/fichas', async (req, res) => {
     const Fichas = await fichaTecnica.find();
     res.send(Fichas);
-})
+}
+    
+    )
 
 //Consultar una ficha por id
 router.get('/fichas/:id', async (req, res) => {
@@ -247,18 +264,5 @@ router.delete('/fichas/:id', async (req, res) => {
     res.send(Fichas);
 })
 
-//Actualizar una ficha por id
-router.put('/fichas/:id', async (req, res) => {
-    const Fichas = await fichaTecnica.findByIdAndUpdate(req
-        .params.id, {
-        nombreProducto: req.body.nombreProducto,
-        talla: req.body.talla,
-        insumo: req.body.insumo,
-        imagen: req.body.imagen,
-        color: req.body.color,
-        cantidadInsumo: req.body.cantidadInsumo,
-        precioInsumo: req.body.precioInsumo
-    }, { new: true });
-    res.send(Fichas);
-})
+
 module.exports = router;

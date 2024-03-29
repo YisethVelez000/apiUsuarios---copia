@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const Joi = require('@hapi/joi');
 const FichaSchema = mongoose.Schema({
     nombreProducto: {
         type: String,
@@ -8,12 +7,10 @@ const FichaSchema = mongoose.Schema({
       talla: {
         type: String,
         required:[true, 'La talla es requerida'],
-        enum:['S','M','L','XL'],
       },
       insumo: {
         type: String,
         required: true,
-        enum:['tela','algodon','hilo','botones',''],
       },
       imagen: {
         type: String,
@@ -22,7 +19,6 @@ const FichaSchema = mongoose.Schema({
       color:{
         type:String,
         required: true,
-        enum:['azul','amarillo','rojo',],
       },
       cantidadInsumo: {
         type: Number,

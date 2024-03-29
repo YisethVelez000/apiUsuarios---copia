@@ -22,6 +22,7 @@ mongoose.connect(uri,
 const authRoutes = require('./routes/auth');
 const rutas = require('./routes/routes');
 
+
 // route middlewares
 app.use('/api/user', authRoutes);
 app.use('/api/routes', rutas);
