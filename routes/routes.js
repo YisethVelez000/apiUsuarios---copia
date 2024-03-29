@@ -234,7 +234,8 @@ router.post('/ficha', async (req, res) => {
         imagen: req.body.imagen,
         color: req.body.color,
         cantidadInsumo: req.body.cantidadInsumo,
-        precioInsumo: req.body.precioInsumo
+        precioInsumo: req.body.precioInsumo,
+        estado: req.body.estado
     });
     try {
         const savedFicha = await Ficha.save();
@@ -274,7 +275,8 @@ router.put('/fichas/:id', async (req, res) => {
         imagen: req.body.imagen,
         color: req.body.color,
         cantidadInsumo: req.body.cantidadInsumo,
-        precioInsumo: req.body.precioInsumo
+        precioInsumo: req.body.precioInsumo,
+        estado: req.body.estado
     }, { new: true });
     res.send(Fichas);
 

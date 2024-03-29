@@ -1,3 +1,4 @@
+const { string } = require('@hapi/joi');
 const mongoose = require('mongoose');
 const FichaSchema = mongoose.Schema({
     nombreProducto: {
@@ -27,6 +28,9 @@ const FichaSchema = mongoose.Schema({
       precioInsumo: {
         type: Number,
         required: true,
+      },
+      estado: {
+        type: string
       },
 
 })
