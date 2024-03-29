@@ -7,11 +7,12 @@ const cliente = require('../models/cliente');
 const ordenProduccion = require('../models/ordenProduccion');
 const roles = require('../models/roles');
 const bodyParser = require('body-parser')
+const fichaTecnica = require('../models/fichaTecnica');
 //usamos cors para poder hacer peticiones desde el front
 router.use(cors());
 
 // Configura el body parser
-router.use(bodyParser.urlencoded({ extended: false })); 
+router.use(bodyParser.urlencoded({ extended: false }));
 
 
 router.post('/clientes', async (req, res) => {
@@ -32,7 +33,7 @@ router.post('/clientes', async (req, res) => {
         res
             .status(400)
     }
-}) 
+})
 
 router.get('/clientes', async (req, res) => {
     const clientes = await cliente.find();
@@ -208,5 +209,71 @@ router.put('/roles/:id/estado', async (req, res) => {
     res.send(Roles);
 })
 
+//Creamos las rutas para las fichas tecnicas
+const schemaFicha = Joi.object({
+    nombreProducto: Joi.string().min(1).required(),
+    talla: Joi.string().min(1).required(),
+    insumo: Joi.string().min(1).required(),
+    imagen: Joi.string().min(1).required(),
+    color: Joi.string().min(1).required(),
+    cantidadInsumo: Joi.number().min(1).required(),
+    precioInsumo: Joi.number().min(1).required()
+})
 
+router.post('/ficha', async (req, res) => {
+    // Validate the request body
+    const { error } = schemaFicha.validate(req.body);
+    if (error) {
+        return res.status(400).send(error.details[0].message);
+    }
+    // Create a new user
+    const Ficha = new fichaTecnica({
+        nombreProducto: req.body.nombreProducto,
+        talla: req.body.talla,
+        insumo: req.body.insumo,
+        imagen: req.body.imagen,
+        color: req.body.color,
+        cantidadInsumo: req.body.cantidadInsumo,
+        precioInsumo: req.body.precioInsumo
+    });
+    try {
+        const savedFicha = await Ficha.save();
+        res.send(savedFicha);
+    } catch (error) {
+        res
+            .status(400)
+    }
+})
+
+router.get('/fichas', async (req, res) => {
+    const Fichas = await fichaTecnica.find();
+    res.send(Fichas);
+})
+
+//Consultar una ficha por id
+router.get('/fichas/:id', async (req, res) => {
+    const Fichas = await fichaTecnica.findById(req.params.id);
+    res.send(Fichas);
+})
+
+//Eliminar una ficha por id
+router.delete('/fichas/:id', async (req, res) => {
+    const Fichas = await fichaTecnica.findByIdAndDelete(req.params.id);
+    res.send(Fichas);
+})
+
+//Actualizar una ficha por id
+router.put('/fichas/:id', async (req, res) => {
+    const Fichas = await fichaTecnica.findByIdAndUpdate(req
+        .params.id, {
+        nombreProducto: req.body.nombreProducto,
+        talla: req.body.talla,
+        insumo: req.body.insumo,
+        imagen: req.body.imagen,
+        color: req.body.color,
+        cantidadInsumo: req.body.cantidadInsumo,
+        precioInsumo: req.body.precioInsumo
+    }, { new: true });
+    res.send(Fichas);
+})
 module.exports = router;
