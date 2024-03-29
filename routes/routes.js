@@ -264,5 +264,20 @@ router.delete('/fichas/:id', async (req, res) => {
     res.send(Fichas);
 })
 
+//Editar una ficha
+router.put('/fichas/:id', async (req, res) => {
+    const Fichas = await fichaTecnica.findByIdAndUpdate(req
+        .params.id, {
+        nombreProducto: req.body.nombreProducto,
+        talla: req.body.talla,
+        insumo: req.body.insumo,
+        imagen: req.body.imagen,
+        color: req.body.color,
+        cantidadInsumo: req.body.cantidadInsumo,
+        precioInsumo: req.body.precioInsumo
+    }, { new: true });
+    res.send(Fichas);
+
+})
 
 module.exports = router;
