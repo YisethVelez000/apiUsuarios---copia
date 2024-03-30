@@ -210,20 +210,10 @@ router.put('/roles/:id/estado', async (req, res) => {
 })
 
 //Creamos las rutas para las fichas tecnicas
-const schemaFicha = Joi.object({
-    nombreProducto: Joi.string().min(1).required(),
-    talla: Joi.string().min(1).required(),
-    insumo: Joi.string().min(1).required(),
-    imagen: Joi.string().min(1).required(),
-    color: Joi.string().min(1).required(),
-    cantidadInsumo: Joi.number().min(1).required(),
-    precioInsumo: Joi.number().min(1).required(),
-    estado:Joi.string().min(1).required(),
-})
 
 router.post('/ficha', async (req, res) => {
     // Validate the request body
-    const { error } = schemaFicha.validate(req.body);
+    
     if (error) {
         return res.status(400).send(error.details[0].message);
     }
