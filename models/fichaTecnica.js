@@ -30,7 +30,8 @@ const FichaSchema = mongoose.Schema({
         required: true,
       },
       estado: {
-        type: string
+        type: string,
+        required: true,
       },
 
 })
