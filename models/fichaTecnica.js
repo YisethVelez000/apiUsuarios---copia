@@ -30,9 +30,11 @@ const FichaSchema = mongoose.Schema({
         required: true,
       },
       estado: {
-        type: string,
+        type: String,
         required: true,
-      },
+        minlength: 3,
+        default: 'activo'
+    },
 
 })
     
