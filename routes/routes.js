@@ -213,10 +213,7 @@ router.put('/roles/:id/estado', async (req, res) => {
 
 router.post('/ficha', async (req, res) => {
     // Validate the request body
-    
-    if (error) {
-        return res.status(400).send(error.details[0].message);
-    }
+
     // Create a new user
     const Ficha = new fichaTecnica({
         nombreProducto: req.body.nombreProducto,
