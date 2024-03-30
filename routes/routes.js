@@ -218,7 +218,7 @@ const schemaFicha = Joi.object({
     color: Joi.string().min(1).required(),
     cantidadInsumo: Joi.number().min(1).required(),
     precioInsumo: Joi.number().min(1).required(),
-    estado: Joi.string().min(1).required()
+    estado:Joi.string().min(1).required(),
 })
 
 router.post('/ficha', async (req, res) => {
