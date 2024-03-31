@@ -28,42 +28,44 @@ const schemaLogin = Joi.object({
 router.use(cors());
 
 // Configura el body parser
-router.use(bodyParser.urlencoded({ extended: false })); 
+router.use(bodyParser.urlencoded({ extended: false }));
 
 
 router.post('/register', async (req, res) => {
 
     // validate user
     const { error } = schemaRegister.validate(req.body)
-    
+
     if (error) {
-        return res.status(400).json({error: error.details[0].message})
+        return res.status(400).json({ error: error.details[0].message })
     }
 
     const isEmailExist = await User.findOne({ email: req.body.email });
     if (isEmailExist) {
-        return res.status(400).json({error: 'Email ya registrado'})
+        return res.status(400).json({ error: 'Email ya registrado' })
+    } else {
+        // hash contraseña
+        const salt = await bcrypt.genSalt(10);
+        const password = await bcrypt.hash(req.body.password, salt);
+
+        const user = new User({
+            name: req.body.name,
+            email: req.body.email,
+            password: password,
+            rol: req.body.rol,
+        });
+        try {
+            const savedUser = await user.save();
+            res.json({
+                error: null,
+                data: savedUser
+            })
+        } catch (error) {
+            res.status(400).json({ error })
+        }
+
     }
 
-    // hash contraseña
-    const salt = await bcrypt.genSalt(10);
-    const password = await bcrypt.hash(req.body.password, salt);
-
-    const user = new User({
-        name: req.body.name,
-        email: req.body.email,
-        password: password,
-        rol: req.body.rol,
-    });
-    try {
-        const savedUser = await user.save();
-        res.json({
-            error: null,
-            data: savedUser
-        })
-    } catch (error) {
-        res.status(400).json({error})
-    }
 })
 // Remove the existing declaration of 'schemaLogin' here
 
@@ -72,13 +74,13 @@ router.post('/login', async (req, res) => {
     // validaciones
     const { error } = schemaLogin.validate(req.body);
     if (error) return res.status(400).json({ error: error.details[0].message })
-    
+
     const user = await User.findOne({ email: req.body.email });
     if (!user) return res.status(400).json({ error: 'Usuario no encontrado' });
 
     const validPassword = await bcrypt.compare(req.body.password, user.password);
     if (!validPassword) return res.status(400).json({ error: 'contraseña no válida' })
-    
+
     res.json({
         error: null,
         data: 'exito bienvenido'
@@ -91,7 +93,7 @@ router.get('/listarUsuarios', async (req, res) => {
 });
 //Traemos un usuario por su correo electronico para poder editar su contraseña
 router.get('/listarUsuario/:email', async (req, res) => {
-    const user = await User.find({email: req.params.email});
+    const user = await User.find({ email: req.params.email });
     res.json(user);
 });
 
@@ -99,13 +101,13 @@ router.get('/listarUsuario/:email', async (req, res) => {
 router.put('/editarUsuario/:email', async (req, res) => {
     const { name, email, password, rol, precioDolar } = req.body;
     const newUser = { name, email, password, rol, precioDolar };
-    await User.findOneAndUpdate({email: req.params.email}, newUser);
+    await User.findOneAndUpdate({ email: req.params.email }, newUser);
     res.json('Usuario actualizado');
 });
 
 //Eliminamos un usuario por su correo electronico
 router.delete('/eliminarUsuario/:email', async (req, res) => {
-    await User.findOneAndDelete({email: req.params.email});
+    await User.findOneAndDelete({ email: req.params.email });
     res.json('Usuario eliminado');
 });
 module.exports = router;

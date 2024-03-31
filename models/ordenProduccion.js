@@ -32,5 +32,8 @@ const ordenProduccionSchema = mongoose.Schema({
         default: 'pendiente'
     }
 })
-
+// Campo virtual para obtener solo el día de la fecha
+ordenProduccionSchema.virtual('diaFechaEstimada').get(function () {
+    return this.fechaEstimada.getDate();
+  });
 module.exports = mongoose.model('OrdenProduccion', ordenProduccionSchema);
