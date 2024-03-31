@@ -77,9 +77,9 @@ router.put('/clientes/:id/estado', async (req, res) => {
 const schemaOrden = Joi.object({
     nroOrden: Joi.number().min(1).required(),
     fechaEstimada:Joi.date().required(),
-    tallas: Joi.array().min(1).required(),
+    tallas: Joi.string().min(1).required(),
     cantidad: Joi.number().min(1).required(),
-    color: Joi.array().min(1).required(),
+    color: Joi.string().min(1).required(),
     estado: Joi.string().min(1).required()
 })
 
