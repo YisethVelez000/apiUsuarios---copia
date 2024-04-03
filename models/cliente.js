@@ -39,6 +39,10 @@ const clienteSchema = mongoose.Schema({
         type: String,
         required : true,
         default: 'cliente'
+    },
+    ciudad:{
+        type: String,
+        required: true
     }
 })
 

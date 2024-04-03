@@ -24,7 +24,8 @@ router.post('/clientes', async (req, res) => {
         email: req.body.email,
         telefono: req.body.telefono,
         estado: req.body.estado,
-        rol: req.body.rol
+        rol: req.body.rol,
+        ciudad : req.body.ciudad
     });
     try {
         const savedCliente = await Cliente.save();
@@ -61,6 +62,7 @@ router.put('/clientes/:id', async (req, res) => {
         direccion: req.body.direccion,
         email: req.body.email,
         telefono: req.body.telefono,
+        ciudad: req.body.ciudad
     }, { new: true });
     res.send(clientes);
 })
